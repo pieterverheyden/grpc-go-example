@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/pieterverheyden/grpc-go-example;grpc_go_example";
+
+import "google/protobuf/empty.proto";
+
+message User {
+    string email = 1;
+    string firstName = 2;
+    optional string lastName = 3;
+    enum Gender {
+      F = 0;
+      M = 1;
+      X = 2;
+    }
+    optional Gender gender = 4;
+}
+
+message UserEmail {
+  string email = 1;
+}
+
+service UserManagement {
+  rpc CreateOrUpdateUser(User) returns (google.protobuf.Empty) {}
+  rpc GetUserByEmail(UserEmail) returns (User) {}
+  rpc GetAllUsers(google.protobuf.Empty) returns (stream User) {}
+  rpc RemoveUserByEmail(UserEmail) returns (google.protobuf.Empty) {}
+}
